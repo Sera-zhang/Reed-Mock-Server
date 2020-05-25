@@ -78,10 +78,13 @@ export class ConfigEditModalComponent implements OnInit, OnChanges {
     });
   }
 
-  submit(): void {
+  submit(modal: any): void {
     this.onSubmit.emit({
-      config: JSON.parse(this.editorText),
-      extra: this.extraData
+      data: {
+        config: JSON.parse(this.editorText),
+        extra: this.extraData
+      },
+      close: () => modal.close()
     });
   }
 

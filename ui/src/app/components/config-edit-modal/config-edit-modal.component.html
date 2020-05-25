@@ -11,7 +11,7 @@
         </div>
         <div class="form-group" *ngIf="showConfigEditor">
             <label>{{ configName }}</label>
-            <json-editor [options]="editorOptions" [data]="data" [editing]="editing" (onChange)="onEditorChange($event)"
+            <json-editor [styleClass]="{ 'editor-lg': !extraTemplate }" [options]="editorOptions" [data]="data" [editing]="editing" (onChange)="onEditorChange($event)"
                 (onError)="onEditorError($event)">
             </json-editor>
         </div>
@@ -21,7 +21,7 @@
         </ng-container>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" [disabled]="!canSubmit" (click)="submit()">Submit</button>
+        <button type="button" class="btn btn-outline-primary" [disabled]="!canSubmit" (click)="submit(modal)">Submit</button>
         <button type="button" class="btn btn-outline-dark lmn-ml-3" (click)="close(modal)">Close</button>
     </div>
 </ng-template>

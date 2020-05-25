@@ -1,11 +1,17 @@
 <div class="mb-3" *ngIf="item">
     <label>{{ item.name }}</label>
     <ng-container *ngFor="let api of item.apiList">
-        <div class="shadow-sm">
+        <div class="shadow-sm mb-2">
             <div class="card-body">
-                <div class="d-flex">
-                    <span *ngIf="api.method" class="mr-3">{{ api.method }}</span>
-                    <span>{{ api.url }}</span>
+                <div class="d-flex align-items-baseline">
+                    <span *ngIf="api.method" class="mr-3" [ngClass]="tagClassMap[api.method]" tagText>{{ api.method }}</span>
+                    <span style="font-size: 1.25em;">{{ api.url }}</span>
+                    <span *ngIf="api.description" class="ml-3 font-weight-light">{{ api.description }}</span>
+                    <button class="ml-auto btn btn-sm"
+                        [class.btn-outline-primary]="api.triable" [disabled]="!api.triable"
+                        (click)="tryApi(api)">
+                        Try it out
+                    </button>
                 </div>
             </div>
         </div>

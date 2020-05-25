@@ -1,5 +1,5 @@
 {
-    "/admin": {
-    "target": "http://192.168.43.156:3000"
+    "/api": {
+    "target": "http://localhost:3001"
   }
 }

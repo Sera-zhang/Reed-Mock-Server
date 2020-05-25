@@ -23,10 +23,9 @@ export interface StaticEndpoint {
 export interface ApiEndpoint {
     name: string;
     endpoint: string;
-    items?: ApiItem[];
 }
 
-export interface ApiEndpointDetail {
+export interface ApiEndpointDetail extends ApiEndpoint {
     items?: ApiItem[];
     fileData?: string;
 }
@@ -39,6 +38,8 @@ export interface ApiItem {
 export interface Api {
     method?: string;
     url: string;
+    description?: string;
+    triable?: boolean;
 }
 
 export interface WsEndpoint extends ApiEndpoint {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiItem, ApiEndpoint, ApiEndpointDetail } from 'src/app/app.model';
 import { AppService } from 'src/app/app.service';
 
@@ -23,8 +23,12 @@ export class ApiEndpointComponent implements OnInit {
   @Input()
   tagFields: string[] = [];
 
+  @Output()
+  readonly onDataChange = new EventEmitter<void>();
+
   isExpand = false;
   isLoading = false;
+  fileData = '';
 
   get endpointItems(): ApiItem[] {
     return this.endpointDetail && this.endpointDetail.items || [];
@@ -37,13 +41,6 @@ export class ApiEndpointComponent implements OnInit {
       }
       return `${name}: ${this.endpoint[name]}`;
     });
-  }
-
-  get editorData(): Object {
-    if (this.type === 'api' || this.type === 'ws') {
-      return this.endpointDetail;
-    }
-    return this.endpoint;
   }
 
   constructor(private service: AppService) { }
@@ -61,19 +58,46 @@ export class ApiEndpointComponent implements OnInit {
     }
   }
 
+  openEditor(modal: any, event: MouseEvent): void {
+    event.stopPropagation();
+    this.getDetail();
+    setTimeout(() => modal.open());
+  }
+
   getDetail(): void {
-    if (this.endpointDetail) {
+    if (!this.hasDetail) {
       return;
     }
     this.isLoading = true;
     this.service.getEndpoint(this.type, this.endpoint.name)
       .subscribe(res => {
         this.endpointDetail = res;
+        this.fileData = res.fileData;
         this.isLoading = false;
       });
   }
 
-  submit(configStr: string): void {
-    console.log(configStr);
+  submit(event: { data: any, close: any }): void {
+    const { data, close } = event;
+    this.service.updateEndpoint(this.type, this.endpoint.name, data.config, data.extra)
+      .subscribe(res => {
+        console.log('success');
+        close();
+        this.getDetail();
+        this.onDataChange.emit();
+      });
+  }
+
+  openDeleteConfirm(modal: any, event: MouseEvent): void {
+    event.stopPropagation();
+    modal.open();
+  }
+
+  deleteEndpoint(endpoint: ApiEndpoint): void {
+    this.service.deleteEndpoint(this.type, endpoint.name)
+      .subscribe(res => {
+        console.log('deleted');
+        this.onDataChange.emit();
+      });
   }
 }

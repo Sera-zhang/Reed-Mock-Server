@@ -14,6 +14,7 @@ import { ConfigEditModalComponent } from './components/config-edit-modal/config-
 import { JsonEditorComponent } from './components/json-editor/json-editor.component';
 import { EndpointEditModalComponent } from './components/endpoint-edit-modal/endpoint-edit-modal.component';
 import { FormsModule } from '@angular/forms';
+import { ConfirmComponent } from './components/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FormsModule } from '@angular/forms';
     TagComponent,
     ConfigEditModalComponent,
     JsonEditorComponent,
-    EndpointEditModalComponent
+    EndpointEditModalComponent,
+    ConfirmComponent
   ],
   imports: [
     BrowserModule,
