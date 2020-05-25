@@ -1,0 +1,11 @@
+:host ::ng-deep .jsoneditor {
+    min-height: 300px;
+    max-height: 60vh;
+    display: flex;
+    flex-direction: column;
+
+    ::ng-deep .jsoneditor-outer {
+        flex: 1 1 300px;
+        overflow: auto;
+    }
+}

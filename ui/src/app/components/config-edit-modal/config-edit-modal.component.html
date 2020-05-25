@@ -1,0 +1,27 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">{{ title }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="close(modal)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div *ngIf="loading" class="d-flex position-absolute h-100 w-100" style="z-index: 1000;">
+            <loading class="m-auto"></loading>
+        </div>
+        <div class="form-group" *ngIf="showConfigEditor">
+            <label>{{ configName }}</label>
+            <json-editor [options]="editorOptions" [data]="data" [editing]="editing" (onChange)="onEditorChange($event)"
+                (onError)="onEditorError($event)">
+            </json-editor>
+        </div>
+
+        <ng-container *ngIf="extraTemplate">
+            <ng-container *ngTemplateOutlet="extraTemplate; context: { data: extraData, onChange: onExtraChange }"></ng-container>
+        </ng-container>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" [disabled]="!canSubmit" (click)="submit()">Submit</button>
+        <button type="button" class="btn btn-outline-dark lmn-ml-3" (click)="close(modal)">Close</button>
+    </div>
+</ng-template>

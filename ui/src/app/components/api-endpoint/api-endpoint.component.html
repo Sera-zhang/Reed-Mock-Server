@@ -1,0 +1,35 @@
+<div class="card mb-3">
+    <div class="card-header d-flex align-items-center" [class.ep-header-collapsable]="hasDetail" (click)="expand()">
+        <h5>{{ endpoint.endpoint }}</h5>
+        <ng-container *ngFor="let tag of tagTexts">
+            <span *ngIf="tag" class="ml-3" [tagText]="tag"></span>
+        </ng-container>
+        <button class="btn btn-light ml-auto" (click)="$event.stopPropagation(); editModal.open();">
+            <i class="fa fa-edit"></i>
+        </button>
+        <i *ngIf="hasDetail" class="ml-3 fa fa-chevron-down"></i>
+    </div>
+    <div [ngbCollapse]="!isExpand">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 100px;">
+            <loading *ngIf="isLoading"></loading>
+            <div *ngIf="!isLoading" class="card-body">
+                <ng-container *ngFor="let item of endpointItems">
+                    <ng-container *ngTemplateOutlet="endpointItem; context: { $implicit: item }"></ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<config-edit-modal #editModal="configEditModal" [data]="endpoint" [title]="type.toUpperCase() + ' ' + endpoint.endpoint"
+    [loading]="loading" [extraTemplate]="extraEditTemplate" (onSubmit)="submit($event)"></config-edit-modal>
+
+<ng-template #extraEditTemplate let-data let-onChange="onChange">
+    <div *ngIf="type === 'api' || type === 'ws'" class="form-group">
+        <label>Template</label>
+        <textarea class="form-control" rows="10" [ngModel]="data" (ngModelChange)="onChange($event)"></textarea>
+    </div>
+</ng-template>
+<ng-template #endpointItem let-item>
+    <api-endpoint-item ngSwichCase="api" [item]="item"></api-endpoint-item>
+</ng-template>

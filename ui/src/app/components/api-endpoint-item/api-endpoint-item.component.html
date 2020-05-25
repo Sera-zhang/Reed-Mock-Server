@@ -1,0 +1,13 @@
+<div class="mb-3" *ngIf="item">
+    <label>{{ item.name }}</label>
+    <ng-container *ngFor="let api of item.apiList">
+        <div class="shadow-sm">
+            <div class="card-body">
+                <div class="d-flex">
+                    <span *ngIf="api.method" class="mr-3">{{ api.method }}</span>
+                    <span>{{ api.url }}</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
