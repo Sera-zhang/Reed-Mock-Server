@@ -1,29 +1,40 @@
-const Koa = require('koa'),
-    setupMiddleware = require('./lib/middleware'),
-    Config = require('./lib/config')
-
-
 process.on('uncaughtException', err => {
     console.error('global process error', err)
 })
 
 process.env.NODE_ENV = (process.env.NODE_ENV || 'development').trim()
-const httpPort = Number(process.env.PORT || Config.port)
+process.env.MockConfig = (process.env.MockConfig || 'mock-server.json').trim()
+process.env.EnablePortal = process.env.hasOwnProperty('EnablePortal') ? process.env.hasOwnProperty('EnablePortal') : 'true'
 
+
+const Koa = require('koa'),
+    setupMiddleware = require('./lib/middleware'),
+    portal = require('./lib/portal'),
+    Config = require('./lib/config')
+
+var httpPort = Number(Config.port || process.env.PORT)
+var portalApp
 
 /**
  * Create HTTP server with KOA
  * @return {http.Server}
  */
 function startServer(port) {
+    process.env.EnablePortal && (portalApp = portal())
+    httpPort = port || httpPort
+    return run(httpPort)
+}
+
+function run(port) {
     const app = new Koa()
     setupMiddleware(app)
 
-    const server = app.listen(port || httpPort)
+    const server = app.listen(port)
     server.timeout = (Number(Config.timeout) || 5 * 60) * 1000
     server.on('listening', onListening)
     server.on('error', onError)
-    // server.on('close', () => process.exit(0))
+
+    portalApp && portalApp.once('restart-mock', () => restart(server))
 
     return server
 }
@@ -53,9 +64,17 @@ function onError(error) {
 function onListening() {
     if (process.env.NODE_ENV != 'development') return
 
-    let msg = `Mock server listening on port: ${httpPort}, node environment: ${process.env.NODE_ENV}`
+    let msg = `[Reed Mock] mock server url: http://localhost:${httpPort}/`
     console.info(msg)
 }
+
+function restart(server) {
+    console.log('[Reed Mock] restarting server...')
+
+    httpPort = Config.port ||  server.address().port
+    server.close(() => run(httpPort))
+}
+
 
 if (!module.parent) startServer()
 
