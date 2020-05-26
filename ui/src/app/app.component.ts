@@ -37,6 +37,10 @@ export class AppComponent implements OnInit {
     }
   };
 
+  templateDefault = `{
+  "hello": "world"
+}`;
+
   editingEndpointType = '';
 
   get mockServerUrl(): string {
