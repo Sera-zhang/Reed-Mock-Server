@@ -28,7 +28,7 @@
   <div class="shadow p-3 mb-5 bg-white rounded position-relative">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">APIs</label>
-      <button class="btn btn-light ml-auto" [disabled]="!apiEndpoints.enabled"
+      <button class="btn btn-light ml-auto" [disabled]="!isEnabled('serveApi')"
         (click)="openEndpointEditor(endpointEditModal, 'api')">
         <i class="fa fa-plus"></i>
       </button>
@@ -41,7 +41,7 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Websockets</label>
-      <button class="btn btn-light ml-auto" [disabled]="!wsEndpoints.enabled"
+      <button class="btn btn-light ml-auto" [disabled]="!isEnabled('serveWebsocket')"
         (click)="openEndpointEditor(endpointEditModal, 'ws')">
         <i class="fa fa-plus"></i>
       </button>
@@ -54,7 +54,7 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Static</label>
-      <button class="btn btn-light ml-auto" [disabled]="!staticEndpoints.enabled"
+      <button class="btn btn-light ml-auto" [disabled]="!isEnabled('serveStatic')"
         (click)="openEndpointEditor(endpointEditModal, 'static')">
         <i class="fa fa-plus"></i>
       </button>
@@ -67,7 +67,7 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Proxy</label>
-      <button class="btn btn-light ml-auto" [disabled]="!proxyEndpoints.enabled"
+      <button class="btn btn-light ml-auto" [disabled]="!isEnabled('serveProxy')"
         (click)="openEndpointEditor(endpointEditModal, 'proxy')">
         <i class="fa fa-plus"></i>
       </button>
@@ -81,7 +81,7 @@
     (onSubmit)="submitFullConfig($event)"></config-edit-modal>
 
   <config-edit-modal #endpointEditModal="configEditModal" [data]="endpointDefault[editingEndpointType]" title="Config"
-    configName="Endpoint Config" [extraData]="'wefwefwfew'" [extraTemplate]="extraEditTemplate"
+    configName="Endpoint Config" [extraData]="templateDefault" [extraTemplate]="extraEditTemplate"
     (onSubmit)="submitEndpoint($event)"></config-edit-modal>
 
   <ng-template #extraEditTemplate let-data="data" let-onChange="onChange">
