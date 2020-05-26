@@ -13,26 +13,16 @@ export class AppComponent implements OnInit {
 
   endpointDefault = {
     api: {
-      name: 'api',
       endpoint: '/api',
-      filePath: './configs/json-api.hbs',
-      options: {
-
-      }
+      options: {}
     },
     ws: {
-      name: 'ws',
       endpoint: '/ws',
-      filePath: './config/json-ws.hbs',
       type: 'timer | fileWatcher',
       interval: '500 (Only applicable when type is timer)',
-      options: {
-
-      }
-
+      options: {}
     },
     static: {
-      name: 'static',
       endpoint: '/',
       indexPages: [
         'index.html',
@@ -72,73 +62,6 @@ export class AppComponent implements OnInit {
   constructor(private service: AppService) { }
 
   ngOnInit(): void {
-    // this.mockConfig = {
-    //   admin: {
-    //     urlPrefix: '/admin'
-    //   },
-    //   customMiddleware: {
-    //     front: [],
-    //     last: []
-    //   },
-    //   serveApi: {
-    //     enabled: true,
-    //     endpoints: [
-    //       {
-    //         name: 'api1',
-    //         endpoint: '/api1',
-    //         items: [
-    //           {
-    //             name: 'user',
-    //             apiList: [
-    //               {
-    //                 method: 'GET',
-    //                 url: 'http://localhsot:3000/api/users'
-    //               }
-    //             ]
-    //           }
-    //         ]
-    //       }
-    //     ]
-    //   },
-    //   serveProxy: {
-    //     enabled: true,
-    //     endpoints: [
-    //       {
-    //         endpoint: '/proxy-foo',
-    //         target: 'http://localhost:2999/api'
-    //       }
-    //     ]
-    //   },
-    //   serveStatic: {
-    //     enabled: true,
-    //     endpoints: [
-    //       {
-    //         endpoint: '/',
-    //         indexPages: ['index.html', 'index.htm'],
-    //         dirPath: './static'
-    //       }
-    //     ]
-    //   },
-    //   serveWebsocket: {
-    //     enabled: true,
-    //     endpoints: [
-    //       {
-    //         name: 'ws1',
-    //         endpoint: '/ws1',
-    //         type: 'timer',
-    //         interval: '500',
-    //         items: []
-    //       },
-    //       {
-    //         name: 'ws2',
-    //         endpoint: '/ws2',
-    //         type: 'fileWatcher'
-    //       }
-    //     ]
-    //   },
-    //   timeout: 300,
-    //   port: '3000'
-    // }
     this.loadFullConfig();
   }
 
@@ -158,7 +81,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => modal.open());
   }
 
-  submitFullConfig(event: { data: any, close: any}): void {
+  submitFullConfig(event: { data: any, close: any }): void {
     const { data, close } = event;
     this.service.updateFullConfig(data.config)
       .subscribe(res => {
@@ -169,12 +92,13 @@ export class AppComponent implements OnInit {
     console.log(data);
   }
 
-  submitEndpoint(event: { data: any, close: any}): void {
+  submitEndpoint(event: { data: any, close: any }): void {
     const { data, close } = event;
     this.service.addEndpoint(this.editingEndpointType, data.config, data.extra)
       .subscribe(res => {
         console.log('success');
         close();
+        this.loadFullConfig();
       });
   }
 }

@@ -15,13 +15,14 @@ export interface EndpointType<T> {
 }
 
 export interface StaticEndpoint {
+    id: string;
     endpoint: string;
     indexPages: string[];
     dirPath: string;
 }
 
 export interface ApiEndpoint {
-    name: string;
+    id: string;
     endpoint: string;
 }
 
@@ -48,6 +49,7 @@ export interface WsEndpoint extends ApiEndpoint {
 }
 
 export interface ProxyEndpoint {
+    id: string;
     endpoint: string;
     target: string;
     options?: any;

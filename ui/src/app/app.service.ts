@@ -18,7 +18,7 @@ export class AppService {
     fullConfig: MockConfig;
 
     get mockServerUrl(): string {
-        return this.fullConfig && `${location.protocol}//${location.hostname}/${this.fullConfig.port}`;
+        return this.fullConfig && `${location.protocol}//${location.hostname}:${this.fullConfig.port}`;
     }
 
     constructor(private http: HttpClient) { }
@@ -35,10 +35,10 @@ export class AppService {
         return this.http.put('/api/config', config);
     }
 
-    getEndpoint(type: string, name: string): Observable<ApiEndpointDetail> {
+    getEndpoint(type: string, id: string): Observable<ApiEndpointDetail> {
         return this.http.get('/api/endpoint', {
             params: {
-                type: typeKeyMap[type], name
+                type: typeKeyMap[type], id
             }
         }).pipe(map((res: ApiEndpointDetail) => {
             if (!res) {
@@ -74,17 +74,17 @@ export class AppService {
         })
     }
 
-    updateEndpoint(type: string, name: string, endpoint: ApiEndpoint, fileData = ''): Observable<any> {
-        return this.http.put(`/api/endpoint?type=${typeKeyMap[type]}&name=${name}`, {
+    updateEndpoint(type: string, id: string, endpoint: ApiEndpoint, fileData = ''): Observable<any> {
+        return this.http.put(`/api/endpoint?type=${typeKeyMap[type]}&id=${id}`, {
             mockConfig: endpoint,
             fileData
         });
     }
 
-    deleteEndpoint(type: string, name: string): Observable<any> {
+    deleteEndpoint(type: string, id: string): Observable<any> {
         return this.http.delete('/api/endpoint', {
             params: {
-                type: typeKeyMap[type], name
+                type: typeKeyMap[type], id
             }
         });
     }
@@ -95,7 +95,7 @@ export class AppService {
         }
         let result = [];
         try {
-            const jsonStr = dataStr.replace(/{{ *[#\/]repeat[ \w]*}}/g, '').replace(/{{.+}}/g, '0');
+            const jsonStr = dataStr.replace(/{{ *[#\/]repeat[ \w]*}}/g, '').replace(/{{[^{}]+}}/g, '0');
             const dataObj = JSON.parse(jsonStr);
             result = Object.keys(dataObj)
         } catch (e) {

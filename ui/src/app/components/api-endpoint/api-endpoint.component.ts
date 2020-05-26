@@ -21,6 +21,9 @@ export class ApiEndpointComponent implements OnInit {
   type: 'api' | 'ws' | 'static' | 'proxy' = 'api';
 
   @Input()
+  index: number = 0;
+
+  @Input()
   tagFields: string[] = [];
 
   @Output()
@@ -69,7 +72,7 @@ export class ApiEndpointComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.service.getEndpoint(this.type, this.endpoint.name)
+    this.service.getEndpoint(this.type, String(this.index))
       .subscribe(res => {
         this.endpointDetail = res;
         this.fileData = res.fileData;
@@ -79,7 +82,7 @@ export class ApiEndpointComponent implements OnInit {
 
   submit(event: { data: any, close: any }): void {
     const { data, close } = event;
-    this.service.updateEndpoint(this.type, this.endpoint.name, data.config, data.extra)
+    this.service.updateEndpoint(this.type, String(this.index), data.config, data.extra)
       .subscribe(res => {
         console.log('success');
         close();
@@ -93,8 +96,8 @@ export class ApiEndpointComponent implements OnInit {
     modal.open();
   }
 
-  deleteEndpoint(endpoint: ApiEndpoint): void {
-    this.service.deleteEndpoint(this.type, endpoint.name)
+  deleteEndpoint(): void {
+    this.service.deleteEndpoint(this.type, String(this.index))
       .subscribe(res => {
         console.log('deleted');
         this.onDataChange.emit();

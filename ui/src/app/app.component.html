@@ -25,15 +25,15 @@
       <i class="fa fa-cog"></i>
     </button>
   </div>
-  <div class="shadow p-3 mb-5 bg-white rounded">
+  <div class="shadow p-3 mb-5 bg-white rounded position-relative">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">APIs</label>
-      <button class="btn btn-light ml-auto" [disabled]="apiEndpoints.disabled"
+      <button class="btn btn-light ml-auto" [disabled]="!apiEndpoints.enabled"
         (click)="openEndpointEditor(endpointEditModal, 'api')">
         <i class="fa fa-plus"></i>
       </button>
     </div>
-    <api-endpoint *ngFor="let endpoint of apiEndpoints" type="api" [hasDetail]="true" [endpoint]="endpoint"
+    <api-endpoint *ngFor="let endpoint of apiEndpoints; let i = index" type="api" [index]="i" [hasDetail]="true" [endpoint]="endpoint"
       (onDataChange)="loadFullConfig()">
     </api-endpoint>
   </div>
@@ -41,12 +41,12 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Websockets</label>
-      <button class="btn btn-light ml-auto" [disabled]="wsEndpoints.disabled"
+      <button class="btn btn-light ml-auto" [disabled]="!wsEndpoints.enabled"
         (click)="openEndpointEditor(endpointEditModal, 'ws')">
         <i class="fa fa-plus"></i>
       </button>
     </div>
-    <api-endpoint *ngFor="let endpoint of wsEndpoints" type="ws" [hasDetail]="true" [tagFields]="['type', 'interval']"
+    <api-endpoint *ngFor="let endpoint of wsEndpoints; let i = index" type="ws" [index]="i" [hasDetail]="true" [tagFields]="['type', 'interval']"
       [endpoint]="endpoint" (onDataChange)="loadFullConfig()">
     </api-endpoint>
   </div>
@@ -54,12 +54,12 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Static</label>
-      <button class="btn btn-light ml-auto" [disabled]="staticEndpoints.disabled"
+      <button class="btn btn-light ml-auto" [disabled]="!staticEndpoints.enabled"
         (click)="openEndpointEditor(endpointEditModal, 'static')">
         <i class="fa fa-plus"></i>
       </button>
     </div>
-    <api-endpoint *ngFor="let endpoint of staticEndpoints" type="static" [tagFields]="['dirPath']" [endpoint]="endpoint"
+    <api-endpoint *ngFor="let endpoint of staticEndpoints; let i = index" type="static" [index]="i" [tagFields]="['dirPath']" [endpoint]="endpoint"
       (onDataChange)="loadFullConfig()">
     </api-endpoint>
   </div>
@@ -67,12 +67,12 @@
   <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="d-flex align-items-center mb-2">
       <label class="endpoints-label">Proxy</label>
-      <button class="btn btn-light ml-auto" [disabled]="proxyEndpoints.disabled"
+      <button class="btn btn-light ml-auto" [disabled]="!proxyEndpoints.enabled"
         (click)="openEndpointEditor(endpointEditModal, 'proxy')">
         <i class="fa fa-plus"></i>
       </button>
     </div>
-    <api-endpoint *ngFor="let endpoint of proxyEndpoints" type="proxy" [tagFields]="['target']" [endpoint]="endpoint"
+    <api-endpoint *ngFor="let endpoint of proxyEndpoints; let i = index" type="proxy" [index]="i" [tagFields]="['target']" [endpoint]="endpoint"
       (onDataChange)="loadFullConfig()">
     </api-endpoint>
   </div>
